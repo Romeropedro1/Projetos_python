@@ -1,0 +1,210 @@
+
+
+```markdown
+# 📊 **Previsão de Score de Crédito com Inteligência Artificial**
+
+Este projeto utiliza técnicas de Inteligência Artificial (IA) para prever o **score de crédito** de clientes com base em suas informações. Abaixo está a explicação do fluxo de trabalho e as etapas do código que realizam o processamento e treinamento de um modelo de IA para fazer essa previsão.
+
+---
+
+## 🚀 **Objetivo do Projeto**
+
+O objetivo deste projeto é treinar um modelo de IA para prever o score de crédito de novos clientes, baseado nas seguintes etapas:
+
+1. **Importação e Preparação da Base de Dados**;
+2. **Tratamento e Codificação de Dados**;
+3. **Treinamento do Modelo de IA**;
+4. **Avaliação do Modelo e Escolha do Melhor Modelo**;
+5. **Previsão para Novos Clientes**.
+
+---
+
+## 🧑‍💻 **Código**
+
+### **1. Importação da Base de Dados**
+
+Primeiro, importamos a base de dados e visualizamos os dados.
+
+```python
+import pandas as pd
+
+Tabela = pd.read_csv("Aula03 - clientes.csv")  # Lê o arquivo CSV com os dados dos clientes
+print(Tabela)  # Exibe os dados importados
+```
+
+---
+
+### **2. Preparação da Base de Dados**
+
+O próximo passo é preparar a base de dados, tratando as colunas e removendo dados irrelevantes.
+
+```python
+# Exibe informações sobre os dados
+print(Tabela.info())
+
+# Remove a coluna "id_cliente" que não será usada no treinamento
+Tabela = Tabela.drop(columns="id_cliente")
+
+# Exibe a base de dados após a remoção da coluna
+print(Tabela.info())
+```
+
+Agora, transformamos colunas do tipo **object (texto)** em números utilizando o **LabelEncoder** para tornar os dados compatíveis com o treinamento da IA.
+
+```python
+import sklearn as sk
+from sklearn.preprocessing import LabelEncoder as LE
+
+# Codificadores para as colunas de texto
+codificador_profissao = LE()
+codificador_mixcredito = LE()
+codificador_pagamento = LE()
+
+# Codifica as colunas de texto em números
+Tabela["profissao"] = codificador_profissao.fit_transform(Tabela["profissao"])
+Tabela["mix_credito"] = codificador_mixcredito.fit_transform(Tabela["mix_credito"])
+Tabela["comportamento_pagamento"] = codificador_pagamento.fit_transform(Tabela["comportamento_pagamento"])
+
+# Exibe as informações da base de dados após a transformação
+print(Tabela.info())
+```
+
+---
+
+### **3. Separação dos Dados em Treinamento e Teste**
+
+Agora que a base está preparada, separamos os dados em duas partes: **treinamento** e **teste**. O objetivo é treinar o modelo com uma parte dos dados e validar a previsão com a outra.
+
+```python
+# Variável Y (coluna que queremos prever)
+Y = Tabela["score_credito"]
+
+# Variável X (colunas utilizadas para fazer a previsão)
+X = Tabela.drop(columns="score_credito")
+
+# Separar os dados em treino e teste
+from sklearn.model_selection import train_test_split
+
+X_treino, X_teste, Y_treino, Y_teste = train_test_split(X, Y, test_size=0.28)
+
+# Exibe as divisões para treino e teste
+print(X_treino, X_teste, Y_treino, Y_teste)
+```
+
+---
+
+### **4. Treinamento do Modelo de IA**
+
+Agora, treinamos dois modelos de IA para prever o score de crédito. Vamos usar o **RandomForestClassifier** e o **KNeighborsClassifier**.
+
+```python
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.neighbors import KNeighborsClassifier
+
+# Inicializa os modelos de IA
+modelo_arvoredecisao = RandomForestClassifier()
+modelo_knn = KNeighborsClassifier()
+
+# Treina os modelos
+modelo_arvoredecisao.fit(X_treino, Y_treino)
+modelo_knn.fit(X_treino, Y_treino)
+```
+
+---
+
+### **5. Avaliação do Modelo**
+
+Agora, testamos a acurácia dos modelos treinados para escolher o melhor. A acurácia é a medida de como o modelo está fazendo previsões corretas.
+
+```python
+from sklearn.metrics import accuracy_score
+
+# Previsões dos modelos
+previsao_arvoredecisao = modelo_arvoredecisao.predict(X_teste)
+previsao_knn = modelo_knn.predict(X_teste)
+
+# Avalia a acurácia dos modelos
+print("Acurácia do RandomForestClassifier:", accuracy_score(Y_teste, previsao_arvoredecisao))
+print("Acurácia do KNeighborsClassifier:", accuracy_score(Y_teste, previsao_knn))
+```
+
+---
+
+### **6. Previsão para Novos Clientes**
+
+Por fim, usamos o modelo treinado para prever o score de crédito de **novos clientes**. A base de dados dos novos clientes é processada da mesma forma que os dados de treinamento, e depois a previsão é feita.
+
+```python
+# Importar dados dos novos clientes
+Tabela_novos_clientes = pd.read_csv("Aula03 - novos_clientes.csv")
+print(Tabela_novos_clientes)
+
+# Codifica as colunas de texto dos novos clientes
+Tabela_novos_clientes["profissao"] = codificador_profissao.transform(Tabela_novos_clientes["profissao"])
+Tabela_novos_clientes["mix_credito"] = codificador_mixcredito.transform(Tabela_novos_clientes["mix_credito"])
+Tabela_novos_clientes["comportamento_pagamento"] = codificador_pagamento.transform(Tabela_novos_clientes["comportamento_pagamento"])
+
+# Exibe os dados codificados dos novos clientes
+print(Tabela_novos_clientes)
+
+# Prever o score de crédito dos novos clientes
+nova_previsao = modelo_arvoredecisao.predict(Tabela_novos_clientes)
+print("Previsão do score de crédito dos novos clientes:", nova_previsao)
+```
+
+---
+
+## ⚙️ **Requisitos**
+
+Para rodar este projeto, você precisará das seguintes bibliotecas Python:
+
+- **pandas**: Para manipulação de dados.
+- **scikit-learn**: Para criar e treinar os modelos de IA.
+
+### Para instalar as dependências, execute:
+
+```bash
+pip install pandas scikit-learn
+```
+
+---
+
+## 🏁 **Como Rodar o Projeto**
+
+1. Clone este repositório para sua máquina local:
+
+```bash
+git clone https://github.com/seu_usuario/IA_Score_Credito.git
+```
+
+2. Navegue até o diretório do projeto:
+
+```bash
+cd IA_Score_Credito
+```
+
+3. Execute o script Python:
+
+```bash
+python seu_script.py
+```
+
+---
+
+## 🤝 **Contribuições**
+
+Se você deseja contribuir para este projeto, faça um fork deste repositório, realize suas modificações e envie um pull request.
+
+---
+
+## 📜 **Licença**
+
+Este projeto está licenciado sob a Licença MIT. Consulte o arquivo [LICENSE](LICENSE) para mais detalhes.
+
+---
+
+**🚀** **Agradecemos pela sua contribuição e participação!** 😊
+```
+
+
+

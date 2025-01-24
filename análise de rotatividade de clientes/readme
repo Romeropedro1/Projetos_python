@@ -1,0 +1,132 @@
+Aqui está um exemplo de `README.md` que você pode usar para o seu projeto com base no código que você forneceu. Ele descreve o objetivo do projeto, as etapas que você seguiu, e como configurar o ambiente para rodar o código.
+
+```markdown
+# Análise de Cancelamento de Clientes
+
+Este repositório contém um projeto que tem como objetivo realizar uma análise da rotatividade de clientes (churn) e identificar os fatores que influenciam o cancelamento de assinaturas.
+
+## Objetivo do Projeto
+
+O objetivo desse projeto é analisar uma base de dados de cancelamento de clientes, identificar as causas mais comuns do cancelamento e realizar uma análise preditiva com base nesses dados. Para isso, passamos por várias etapas de processamento e análise de dados.
+
+## Etapas do Projeto
+
+### Passo 1: Importar a base de dados
+No primeiro passo, é realizada a importação da base de dados, que contém informações sobre os clientes e suas interações com a empresa. A base é carregada no formato CSV.
+
+```python
+Tabela = pd.read_csv("cancelamentos_sample.csv")
+```
+
+### Passo 2: Visualizar a base de dados
+Após importar os dados, a base é visualizada utilizando a função `print()` ou `display()` (se estiver usando um notebook Jupyter). O objetivo aqui é entender o formato da base, as colunas e os valores presentes.
+
+```python
+print(Tabela)
+```
+
+### Passo 3: Corrigir os problemas da base de dados
+Após visualizar a base, identificamos alguns problemas como dados ausentes e colunas desnecessárias. A coluna `CustomerID`, por exemplo, é removida, e os dados ausentes são excluídos.
+
+```python
+Tabela = Tabela.drop(columns=["CustomerID"])
+Tabela = Tabela.dropna()
+```
+
+### Passo 4: Análise inicial
+Neste passo, realizamos uma análise inicial para verificar quantos clientes cancelaram suas assinaturas e qual a porcentagem de cancelamento.
+
+```python
+Tabela["cancelou"].value_counts()
+Tabela["cancelou"].value_counts(normalize=True)
+```
+
+### Passo 5: Análise da causa do cancelamento
+Com a base limpa e os dados ajustados, fazemos uma análise mais profunda, comparando as variáveis com a coluna de cancelamento para identificar possíveis causas que influenciam o cancelamento.
+
+A análise inclui a criação de gráficos para visualizar a relação entre variáveis como a duração do contrato, o número de ligações ao call center e o atraso no pagamento.
+
+```python
+Grafico = px.histogram(Tabela, x = "duracao_contrato", color = "cancelou")
+Grafico.show(renderer="notebook")
+```
+
+### Limpeza de Dados
+Com base nas análises realizadas, algumas condições foram aplicadas para corrigir problemas identificados:
+
+- Remover clientes com contrato mensal.
+- Considerar apenas clientes que realizaram menos de 4 ligações ao call center.
+- Filtrar clientes que atrasaram o pagamento por mais de 20 dias.
+
+```python
+Tabela = Tabela[Tabela["duracao_contrato"] != "Monthly"]
+Tabela = Tabela[Tabela["ligacoes_callcenter"] < 4]
+Tabela = Tabela[Tabela["dias_atraso"] < 20]
+```
+
+### Resultado Final
+Após a limpeza e a análise, a base de dados foi refinada e os insights revelaram os principais fatores que influenciam o cancelamento, como o tipo de contrato, o número de interações com o call center e o atraso no pagamento.
+
+```python
+print(Tabela["cancelou"].value_counts(normalize=True))
+```
+
+## Requisitos
+
+Para rodar o código, você precisará das seguintes bibliotecas:
+
+- `pandas` para manipulação de dados.
+- `plotly` para visualização de dados.
+- `nbformat` para trabalhar com notebooks Jupyter.
+
+Instale as bibliotecas necessárias com o comando:
+
+```bash
+pip install nbformat>=4.2.0 ipykernel plotly pandas numpy openpyxl
+```
+
+## Como rodar o projeto
+
+1. Clone este repositório para o seu computador:
+   
+```bash
+git clone https://github.com/seu_usuario/Projeto_Churn.git
+```
+
+2. Navegue até o diretório do projeto:
+   
+```bash
+cd Projeto_Churn
+```
+
+3. Execute o notebook Jupyter ou o código Python.
+
+```bash
+jupyter notebook
+```
+
+4. Execute as células do notebook para realizar a análise.
+
+## Contribuições
+
+Se você quiser contribuir com melhorias ou correções, fique à vontade para fazer um fork deste repositório e enviar pull requests.
+
+## Licença
+
+Este projeto está licenciado sob a Licença MIT - veja o arquivo [LICENSE](LICENSE) para mais detalhes.
+
+```
+
+### Como usar o `README.md`:
+
+1. Crie um arquivo chamado `README.md` na raiz do seu projeto.
+2. Copie e cole o conteúdo acima no arquivo.
+3. Salve o arquivo e faça o commit no seu repositório:
+
+```bash
+git add README.md
+git commit -m "Adicionando README"
+git push
+```
+
+Isso irá fornecer uma boa documentação para o seu repositório no GitHub, detalhando todas as etapas e fornecendo instruções claras para quem quiser rodar o código ou contribuir. Se precisar de ajustes, é só avisar!

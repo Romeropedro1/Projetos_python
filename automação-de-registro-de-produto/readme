@@ -1,3 +1,5 @@
+
+```markdown
 # 📊 **Automação de Cadastro de Produtos**
 
 Este projeto tem como objetivo automatizar o processo de cadastro de produtos em um sistema utilizando a biblioteca **PyAutoGUI** para controlar o mouse e o teclado, e a **pandas** para ler os dados de um arquivo CSV. O fluxo realiza o login no sistema e cadastra automaticamente os produtos a partir de uma tabela de dados.
@@ -28,3 +30,162 @@ import time
 
 # Configurações iniciais do pyautogui
 pyautogui.PAUSE = 1  # Intervalo de 1 segundo entre cada comando do pyautogui
+```
+
+---
+
+### **2. Abrir o Sistema e Fazer Login**
+
+Usa-se o PyAutoGUI para abrir o navegador **Microsoft Edge** e acessar a página de login do sistema.
+
+```python
+# Passo 1: Abrir o sistema da empresa
+pyautogui.press("Win")  # Pressiona a tecla Windows (Menu Iniciar)
+pyautogui.write("edge")  # Digita "edge" para abrir o Microsoft Edge
+pyautogui.press("enter")  # Pressiona Enter para abrir o navegador
+time.sleep(3)  # Espera 3 segundos para o navegador carregar
+
+# Passo 2: Fazer login no sistema
+pyautogui.write("https://dlp.hashtagtreinamentos.com/python/intensivao/login")  # Digita o link de login
+pyautogui.press("enter")  # Pressiona Enter para acessar o site
+time.sleep(2)  # Aguarda 2 segundos para a página carregar
+
+# Preencher os campos de login
+pyautogui.click(x=525, y=403)  # Clica no campo de email (ajuste as coordenadas conforme necessário)
+pyautogui.write("pythonimpressionador@gmail.com")  # Digita o e-mail
+pyautogui.press("tab")  # Move para o campo de senha
+pyautogui.write("Sua senha")  # Digita a senha (substitua pela senha real)
+pyautogui.press("enter")  # Pressiona Enter para fazer o login
+time.sleep(3)  # Aguarda 3 segundos para o sistema carregar
+```
+
+---
+
+### **3. Importar a Base de Dados dos Produtos**
+
+Após o login, a base de dados dos produtos é importada utilizando o **pandas**.
+
+```python
+# Passo 3: Importar a base de dados dos produtos
+Tabela = pd.read_csv("Produtos.csv")  # Lê o arquivo CSV com os dados dos produtos
+print(Tabela)  # Exibe a tabela para verificar se os dados foram carregados corretamente
+
+time.sleep(2)  # Aguarda 2 segundos para garantir que o sistema esteja pronto para os cadastros
+```
+
+---
+
+### **4. Cadastro Automático de Produtos**
+
+Com a base de dados carregada, o código preenche automaticamente os campos do formulário do sistema para cadastrar os produtos, um a um.
+
+```python
+# Passo 4: Cadastrar os produtos
+for linha in Tabela.index:
+    # Clicar no campo de código do produto
+    pyautogui.click(x=511, y=282)  # Ajuste as coordenadas conforme necessário
+
+    # Preencher os campos do formulário
+    codigo = Tabela.loc[linha, "codigo"]
+    pyautogui.write(str(codigo))  # Preenche o campo "código"
+    pyautogui.press("tab")  # Move para o próximo campo
+
+    marca = Tabela.loc[linha, "marca"]
+    pyautogui.write(str(marca))  # Preenche o campo "marca"
+    pyautogui.press("tab")  # Move para o próximo campo
+
+    tipo = Tabela.loc[linha, "tipo"]
+    pyautogui.write(str(tipo))  # Preenche o campo "tipo"
+    pyautogui.press("tab")  # Move para o próximo campo
+
+    categoria = Tabela.loc[linha, "categoria"]
+    pyautogui.write(str(categoria))  # Preenche o campo "categoria"
+    pyautogui.press("tab")  # Move para o próximo campo
+
+    preco_unitario = Tabela.loc[linha, "preco_unitario"]
+    pyautogui.write(str(preco_unitario))  # Preenche o campo "preço unitário"
+    pyautogui.press("tab")  # Move para o próximo campo
+
+    custo = Tabela.loc[linha, "custo"]
+    pyautogui.write(str(custo))  # Preenche o campo "custo"
+    pyautogui.press("tab")  # Move para o próximo campo
+
+    obs = str(Tabela.loc[linha, "obs"])
+    if obs != "nan":  # Verifica se o campo "obs" não está vazio (NaN)
+        pyautogui.write(obs)  # Preenche o campo "observações"
+    pyautogui.press("tab")  # Move para o próximo campo
+
+    # Enviar o formulário
+    pyautogui.press("enter")  # Envia o formulário
+    pyautogui.scroll(10000)  # Rola a página para cima (para visualizar o próximo cadastro)
+    time.sleep(1)  # Espera 1 segundo antes de cadastrar o próximo produto
+
+print("Cadastro de produtos concluído com sucesso!")
+```
+
+---
+
+### **5. Fechar o Navegador**
+
+Após o cadastro de todos os produtos, o navegador é fechado automaticamente.
+
+```python
+# Fechar o navegador após concluir o processo
+pyautogui.hotkey('alt', 'f4')  # Fecha o navegador (ajuste se necessário)
+```
+
+---
+
+## ⚙️ **Requisitos**
+
+Para rodar este projeto, você precisará das seguintes bibliotecas Python:
+
+- **pandas**: Para manipulação de dados e leitura de arquivos CSV.
+- **pyautogui**: Para automação do teclado e mouse.
+
+### Para instalar as dependências, execute:
+
+```bash
+pip install pandas pyautogui
+```
+
+---
+
+## 🏁 **Como Rodar o Projeto**
+
+1. Clone este repositório para sua máquina local:
+
+```bash
+git clone https://github.com/seu_usuario/Automacao_Cadastro_Produtos.git
+```
+
+2. Navegue até o diretório do projeto:
+
+```bash
+cd Automacao_Cadastro_Produtos
+```
+
+3. Execute o script Python:
+
+```bash
+python seu_script.py
+```
+
+---
+
+## 🤝 **Contribuições**
+
+Se você deseja contribuir para este projeto, faça um fork deste repositório, realize suas modificações e envie um pull request.
+
+---
+
+## 📜 **Licença**
+
+Este projeto está licenciado sob a Licença MIT. Consulte o arquivo [LICENSE](LICENSE) para mais detalhes.
+
+---
+
+**🚀** **Agradecemos pela sua contribuição e participação!** 😊
+```
+
+---

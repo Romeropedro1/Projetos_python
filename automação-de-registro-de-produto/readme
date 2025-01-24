@@ -1,0 +1,30 @@
+# 📊 **Automação de Cadastro de Produtos**
+
+Este projeto tem como objetivo automatizar o processo de cadastro de produtos em um sistema utilizando a biblioteca **PyAutoGUI** para controlar o mouse e o teclado, e a **pandas** para ler os dados de um arquivo CSV. O fluxo realiza o login no sistema e cadastra automaticamente os produtos a partir de uma tabela de dados.
+
+---
+
+## 🚀 **Objetivo do Projeto**
+
+Automatizar o cadastro de produtos em um sistema web, realizando os seguintes passos:
+
+1. **Abrir o sistema** da empresa;
+2. **Fazer login** no sistema;
+3. **Importar a base de dados** de produtos;
+4. **Cadastrar os produtos** de forma automatizada.
+
+---
+
+## 🧑‍💻 **Código**
+
+### **1. Importação das Bibliotecas e Configuração Inicial**
+
+Importa-se as bibliotecas necessárias, como o `pyautogui` para automação do teclado e mouse, e o `pandas` para leitura do arquivo CSV com os dados dos produtos.
+
+```python
+import pandas as pd  # Renomeando pandas para pd, é uma convenção mais comum
+import pyautogui
+import time
+
+# Configurações iniciais do pyautogui
+pyautogui.PAUSE = 1  # Intervalo de 1 segundo entre cada comando do pyautogui

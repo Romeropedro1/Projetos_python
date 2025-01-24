@@ -1,16 +1,172 @@
-# <span style="color: #ff6347;">Análise de Cancelamento de Clientes</span>
 
-Este projeto tem como objetivo realizar uma análise de cancelamento de clientes (churn) e identificar os fatores que influenciam o cancelamento de assinaturas. A análise é baseada em uma base de dados de cancelamento de clientes, que foi processada e analisada para gerar insights valiosos.
 
-## <span style="color: #4682b4;">Objetivo do Projeto</span>
+```markdown
+# 🚀 **Análise de Cancelamento de Clientes (Churn Analysis)**
 
-O objetivo deste projeto é entender os fatores que levam os clientes a cancelarem suas assinaturas, por meio de uma análise exploratória e limpeza de dados. Além disso, buscamos identificar quais variáveis estão mais relacionadas ao cancelamento, como tipo de contrato, número de interações com o call center e atraso no pagamento.
+Este projeto tem como objetivo realizar uma análise de cancelamento de clientes (churn) e identificar os fatores que influenciam o cancelamento de assinaturas. A análise é baseada em uma base de dados de cancelamento de clientes, processada e analisada para gerar insights valiosos.
 
-## <span style="color: #32cd32;">Etapas do Projeto</span>
+---
 
-### <span style="color: #8a2be2;">Passo 1: Importação da Base de Dados</span>
+## 🧠 **Objetivo do Projeto**
 
-O primeiro passo é importar a base de dados, que contém informações sobre os clientes e suas interações com a empresa. O arquivo de dados utilizado é o `cancelamentos_sample.csv`.
+O objetivo deste projeto é entender os fatores que levam os clientes a cancelarem suas assinaturas. Utilizamos análise exploratória e limpeza de dados para identificar variáveis que impactam o cancelamento, como o tipo de contrato, número de interações com o call center e atraso no pagamento.
+
+---
+
+## ⚙️ **Etapas do Projeto**
+
+### 1. **Importação da Base de Dados**
+Primeiramente, importamos a base de dados `cancelamentos_sample.csv`, que contém informações sobre os clientes e suas interações com a empresa.
 
 ```python
 Tabela = pd.read_csv("cancelamentos_sample.csv")
+```
+
+---
+
+### 2. **Visualização da Base de Dados**
+Após a importação, realizamos uma visualização inicial para entender a estrutura dos dados, identificar colunas e valores presentes.
+
+```python
+print(Tabela)
+```
+
+---
+
+### 3. **Correção de Problemas na Base de Dados**
+Identificamos e corrigimos problemas como dados ausentes e colunas desnecessárias. Por exemplo, removemos a coluna `CustomerID` e eliminamos as linhas com valores ausentes.
+
+```python
+Tabela = Tabela.drop(columns=["CustomerID"])
+Tabela = Tabela.dropna()
+```
+
+---
+
+### 4. **Análise Inicial**
+Realizamos uma análise inicial para verificar quantos clientes cancelaram suas assinaturas e qual a porcentagem de cancelamento.
+
+```python
+Tabela["cancelou"].value_counts()
+Tabela["cancelou"].value_counts(normalize=True)
+```
+
+---
+
+### 5. **Análise das Causas de Cancelamento**
+Com base nas variáveis disponíveis, comparamos as colunas com a coluna de cancelamento para identificar os fatores que mais impactam o churn. Utilizamos gráficos de histograma para visualizar essas relações.
+
+```python
+import plotly.express as px
+Grafico = px.histogram(Tabela, x="duracao_contrato", color="cancelou")
+Grafico.show(renderer="notebook")
+```
+
+---
+
+### 6. **Limpeza de Dados**
+Aplicamos filtros para resolver problemas identificados:
+
+- Remoção de clientes com contrato mensal.
+- Filtragem de clientes que realizaram mais de 4 ligações ao call center.
+- Consideração apenas de clientes com atraso menor que 20 dias.
+
+```python
+Tabela = Tabela[Tabela["duracao_contrato"] != "Monthly"]
+Tabela = Tabela[Tabela["ligacoes_callcenter"] < 4]
+Tabela = Tabela[Tabela["dias_atraso"] < 20]
+```
+
+---
+
+### 7. **Resultado Final**
+Após a limpeza e organização dos dados, obtemos insights valiosos sobre a taxa de cancelamento. Confira o resultado final:
+
+```python
+print(Tabela["cancelou"].value_counts(normalize=True))
+```
+
+---
+
+## 📦 **Requisitos**
+
+Este projeto utiliza as seguintes bibliotecas:
+
+- `pandas` para manipulação de dados.
+- `plotly` para visualização de dados.
+- `nbformat` para trabalhar com notebooks Jupyter.
+
+### Para instalar as dependências:
+
+```bash
+pip install nbformat>=4.2.0 ipykernel plotly pandas numpy openpyxl
+```
+
+---
+
+## 🚀 **Como Rodar o Projeto**
+
+1. **Clone o repositório**:
+
+```bash
+git clone https://github.com/seu_usuario/Projeto_Churn.git
+```
+
+2. **Navegue até o diretório do projeto**:
+
+```bash
+cd Projeto_Churn
+```
+
+3. **Abra o Jupyter Notebook**:
+
+```bash
+jupyter notebook
+```
+
+4. **Execute as células no notebook** para rodar a análise.
+
+---
+
+## 🤝 **Contribuições**
+
+Se você deseja contribuir para este projeto, faça um fork deste repositório, realize suas modificações e envie um pull request.
+
+---
+
+## 📜 **Licença**
+
+Este projeto está licenciado sob a Licença MIT. Consulte o arquivo [LICENSE](LICENSE) para mais detalhes.
+
+---
+
+## 🎨 **Design e Estilo**
+
+- **Título**: Utilizei ícones para deixar o título mais chamativo.
+- **Cores**: Usando emojis para destacar as seções e tornar o visual mais agradável.
+- **Separadores**: Criei divisões com `---` para organizar melhor o conteúdo e torná-lo mais limpo.
+
+---
+
+**🎉 Agradecemos pela sua visita!** 😊
+```
+
+---
+
+### Explicação:
+
+- **Emojis**: Usei emojis para tornar o texto mais visual e interativo. Eles ajudam a destacar seções e títulos.
+- **Títulos grandes e claros**: Usei títulos mais destacados e explicativos, seguidos de descrições claras para facilitar a leitura.
+- **Separadores**: As linhas horizontais (`---`) ajudam a separar visualmente as diferentes seções, tornando o conteúdo mais organizado e agradável de ler.
+
+### Como aplicar:
+
+1. **Crie o arquivo** `README.md` no seu projeto.
+2. **Copie e cole** o conteúdo acima.
+3. **Salve** o arquivo e faça o commit para o seu repositório:
+
+```bash
+git add README.md
+git commit -m "Adicionando README estilizado"
+git push
+```

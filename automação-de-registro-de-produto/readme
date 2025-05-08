@@ -156,7 +156,7 @@ pip install pandas pyautogui
 1. Clone este repositório para sua máquina local:
 
 ```bash
-git clone https://github.com/seu_usuario/Automacao_Cadastro_Produtos.git
+git clone https://github.com/Romeropedro1/Automacao_Cadastro_Produtos.git
 ```
 
 2. Navegue até o diretório do projeto:
